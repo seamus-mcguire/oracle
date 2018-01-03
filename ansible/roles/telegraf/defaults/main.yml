@@ -1,0 +1,35 @@
+### Build/Deploy variables
+# these are duplicated/overriden by all group_vars
+telegraf_base: /opt/oracle/telegraf
+telegraf_install_dir: "{{ telegraf_base }}/current"
+telegraf_init_script: "{{ telegraf_install_dir }}/telegraf.sh"
+
+# role specific
+telegraf_package_dest: /tmp
+telegraf_package_file: "telegraf-oracle-{{ telegraf_version }}.tar.gz"
+
+telegraf_version_dir: "{{ telegraf_base }}/{{ telegraf_version }}"
+telegraf_binary: "{{ telegraf_install_dir }}/usr/bin/telegraf"
+telegraf_conf_file: "{{ telegraf_install_dir }}/etc/telegraf/telegraf.conf"
+telegraf_user: oracle
+
+### Metrics scripts
+telegraf_tz: UTC
+
+### DB Inputs
+telegraph_oracle_metrics_dir: "{{ telegraf_install_dir }}/oracle_metrics"
+
+### telegraf.conf file variables
+# [[agent]]
+telegraf_agent_interval: 10s
+telegraf_round_interval:  "true"
+telegraf_metric_batch_size: "1000"
+telegraf_metric_buffer_limit: "10000"
+telegraf_collection_jitter: 0s
+telegraf_flush_interval: 10s
+telegraf_flush_jitter: 0s
+telegraf_debug: "false"
+telegraf_quiet: "false"
+telegraf_hostname: 
+telegraf_omit_hostname:  "false"
+

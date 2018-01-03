@@ -1,0 +1,28 @@
+
+asmcmd -p lsdg
+
+## Copy to remote ASM
+export DBI_TRACE=1 # to troubleshoot errors
+asmcmd --privilege sysasm
+cp thread_1_seq_1683.1626.928333983 sys@<hostname>.+ASM1:+DG/DB/ARCHIVELOG/2016_11_19/thread_1_seq_1683
+
+
+# ASM Disk names
+ALTER DISKGROUP DATA_DPC ADD DISK 'ORCL:DATA_DPC07' NAME DATA_DPC07;
+ALTER DISKGROUP DATA_DPC ADD DISK 'ORCL:DATA_DPC08' NAME DATA_DPC08;
+ALTER DISKGROUP DATA_DPC ADD DISK 'ORCL:DATA_DPC09' NAME DATA_DPC09;
+
+-- Orphan Files in ASM
+rman log=asm_files.log << EOF
+connect target /
+catalog start with '+DATA01';
+EOF
+
+### As discussed, the following can be used to map ASM devices back to the underlying storage.
+blkid|grep sd.*oracleasm|while read a b;do echo -n $a$b" scsi_id=";(echo $a|tr -d [:digit:]|tr -d [:]|cut -d"/" -f3|xargs -i scsi_id -g -s /block/{})done;
+# simpler
+blkid|grep oracleasm 
+
+# example output
+scsi_id=/dev/sddlmbd1:LABEL="DISK20" TYPE="oracleasm" 
+scsi_id=/dev/sddlmbc1:LABEL="DISK19" TYPE="oracleasm" 

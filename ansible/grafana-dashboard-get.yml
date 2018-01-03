@@ -1,0 +1,61 @@
+---
+### Not finished
+
+- hosts: "{{ hosts }}"
+  gather_facts: no
+
+  pre_tasks:
+    - fail:
+        msg: "Must supply -e dashboard=name_of_dashboard_variable on the command line"
+      when: dashboard is undefined
+
+  tasks:
+
+  - name: download dashboard
+    local_action:
+      module: uri
+      url: "{{ item.grafana_url }}/api/dashboards/db/{{ item.slug }}"
+      method: GET
+      user: "{{ item.grafana_user }}"
+      password: "{{ item.grafana_password }}"
+      status_code: 200
+      body_format: json
+      return_content: yes
+      force_basic_auth: yes
+    register: json_response
+    run_once: true
+    with_items: "{{ dashboards | selectattr('name', 'equalto', dashboard ) | list }}"
+
+  - name: write dashboard json
+    local_action:
+      module: copy
+      content: "{{ json_response.results[0]['json'] | to_nice_json }}"
+      dest: "{{ item.file }}"
+    run_once: true
+    with_items: "{{ dashboards | selectattr('name', 'equalto', dashboard ) | list }}"
+    #with_items: "{{ dashboards.vars[dashboard] }}"
+
+  - name: variablise dashboard
+    #local_action: command echo "{{ item.regexp }}"
+    local_action: 'command sed -i -e ''s/\("{{ item.attr }}": "\){{ item.regexp }}\("\)/\1{{ item.replace }}\2/g'' {{ dashboard_file }}'
+    run_once: true
+    with_items:
+      - { attr: "datasource", regexp: "{{ dashboards | selectattr('name', 'equalto', dashboard ) | map(attribute='dashboard_datasource') | first}}", 
+          replace: !unsafe "{{ dashboard_datasource }}"
+        }
+      - { attr: "slug", regexp: "{{ dashboards | selectattr('name', 'equalto', dashboard ) | map(attribute='slug') | first}}", 
+          replace: !unsafe "{{ slug }}"
+        }
+      - { attr: "title", regexp: "{{ dashboards | selectattr('name', 'equalto', dashboard ) | map(attribute='dashboard_title') | first}}", 
+          replace: !unsafe "{{ dashboard_title }}"
+        }
+      - { attr: "id", regexp: "32", 
+          replace: "null"
+        }
+    register: cmd
+    vars: { dashboard_file: "{{ dashboards | selectattr('name', 'equalto', dashboard ) | map(attribute='file') | first }}" }
+
+
+  - name: debug
+    debug: var=cmd
+

@@ -1,0 +1,25 @@
+- hosts: "{{ hosts }}"
+  gather_facts: no
+
+  pre_tasks:
+    - fail:
+        msg: "Must supply -e dashboard=name_of_dashboard_variable on the command line"
+      when: dashboard is undefined
+
+  tasks:
+
+  - name: download dashboard
+    local_action:
+      module: uri
+      url: "{{ item.grafana_url }}/api/dashboards/db/{{ item.slug }}"
+      method: DELETE
+      user: "{{ item.grafana_user }}"
+      password: "{{ item.grafana_password }}"
+      status_code: 200
+      body_format: json
+      return_content: yes
+      force_basic_auth: yes
+    register: json_response
+    run_once: true
+    with_items: "{{ dashboards | selectattr('name', 'equalto', dashboard ) | list }}"
+

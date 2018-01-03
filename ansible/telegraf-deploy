@@ -1,0 +1,9 @@
+
+- hosts: "{{ hosts }}"
+  pre_tasks:
+    - fail:
+        msg: "Must supply -e telegraf_version=version variable on the command line"
+      when: telegraf_version is undefined
+  roles:
+    - telegraf
+

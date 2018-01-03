@@ -1,0 +1,23 @@
+
+##
+### ADRCI Settings
+##
+adrci exec="show homes" |grep -v "ADR Homes:"
+
+for h in `adrci exec="set base ${ORACLE_BASE}; show homes" |grep -v "ADR Homes:"` ; do
+
+  echo $h
+  
+  adrci exec="set home ${h}; set control \(SHORTP_POLICY = 120\)"
+  adrci exec="set home ${h}; set control \(LONGP_POLICY = 720\)"
+  adrci exec="set home ${h}; purge "
+
+  ADRS=`adrci exec="set home ${h};select SHORTP_POLICY from adr_control"|tail -3|head -1`
+  ADRL=`adrci exec="set home ${h};select LONGP_POLICY from adr_control"|tail -3|head -1`
+  ADRSD=$((ADRS/24))
+  ADRLD=$((ADRL/24))
+
+  echo "Short $ADRSD  and Long $ADRLD"
+  
+done
+

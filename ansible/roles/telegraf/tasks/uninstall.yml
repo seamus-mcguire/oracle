@@ -1,0 +1,19 @@
+
+
+- hosts: "{{ hosts }}"
+# this may need fixing, 
+# no time to check it now
+  vars_files:
+    - "../defaults/main.yml"
+
+  tasks:
+    - name: stop telegraf
+      shell:  "{{ telegraf_init_script }} stop"
+      ignore_errors: yes
+
+    - name: remove the installation
+      file:
+        path: "{{ telegraf_base }}"
+        state: absent
+
+

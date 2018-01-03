@@ -1,0 +1,31 @@
+---
+- hosts: "{{ hosts }}"
+  gather_facts: no
+
+  pre_tasks:
+    - fail:
+        msg: "Must supply -e dashboard=name_of_dashboard_variable on the command line"
+      when: dashboard is undefined
+
+  tasks:
+
+  - name: deploy dashboard
+    local_action:
+      module: uri
+      url: "{{ item.grafana_url }}/api/dashboards/db"
+      method: POST
+      user: "{{ item.grafana_user }}"
+      password: "{{ item.grafana_password }}"
+      body: "{{ lookup('template', item.file) }}"
+      status_code: 200
+      body_format: json
+      force_basic_auth: yes
+    run_once: true
+    with_items: "{{ dashboards | selectattr('name', 'equalto', dashboard ) | list }}"
+    # these are needed for the body lookup template, if not here they won't be used in the template
+    vars: { 
+            dashboard_title: "{{ item.dashboard_title }}", 
+            dashboard_datasource: "{{ item.dashboard_datasource }}",
+            slug: "{{ item.slug }}" 
+          }
+

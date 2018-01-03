@@ -1,0 +1,99 @@
+##
+### General
+##
+auth_keys: auth_keys.sample
+environ: test
+grid_home: /oracle/grid/12.1.0.2
+is_rac: true
+oracle_homes:
+  - /oracle/db/12.1.0.2
+tnsnames: tnsnames.sample.ora
+use_telegraf: true
+
+databases:
+  - {name: +ASM,     oracle_home: "{{ grid_home }}",               type: asm}
+  - {name: DB_1,     oracle_home: /oracle/db/12.1.0.2,             type: rac, telegraf_db: true}
+  - {name: -MGMTDB,  oracle_home: "{{ grid_home }}",               type: mgmt}
+  - {name: agent,    oracle_home: /oem/agent_inst,                 type: oem_agent}
+
+
+##
+### Grafana
+##
+dashboards:
+  - name: app_sit
+    slug: "app-oracle-sit"
+    dashboard_datasource: "DS"
+    dashboard_title:  "APP Oracle SIT"
+    file: "./roles/telegraf/templates/dash-oracle-nonrac.json"
+    grafana_user: "admin"
+    grafana_password: "admin"
+    grafana_url: "http://url.com:3000"
+  - name: app_uat
+    slug: "app-oracle-uat"
+    dashboard_datasource: "app_influx_db"
+    dashboard_title:  "APP Oracle UAT"
+    file: "./roles/telegraf/templates/dash-oracle-nonrac.json"
+    grafana_user: "admin"
+    grafana_password: "admin"
+    grafana_url: "http://url.com:3000"
+  - name: app_uat_sql
+    slug: "app-oracle-uat-sql"
+    dashboard_datasource: "app_influx_db"
+    dashboard_title:  "APP Oracle UAT SQL"
+    file: "./roles/telegraf/templates/dash-sql.json"
+    grafana_user: "admin"
+    grafana_password: "admin"
+    grafana_url: "http://url.com:3000"
+
+##
+### Telegraf
+##
+use_telegraf: true
+telegraf_base: /u01/app/oracle/telegraf
+
+## Inputs
+# The config will be printed line by line into the configuration
+telegraf_agent_input:
+  - type: exec
+    config:
+      - commands = ["{{ telegraph_oracle_metrics_dir }}/oracle_metrics.sh"]
+      - data_format = "influx"
+      - interval = "60s"
+      - timeout = "40s"
+      - '[inputs.exec.tagpass]'
+      - open_mode = ["primary"]
+  - type: exec
+    config:
+      - commands = ["{{ telegraph_sql_metrics_dir }}/sql_metrics.sh"]
+      - data_format = "influx"
+      - interval = "30m"
+      - timeout = "60s"
+
+## Outputs
+# Different outputs are required for different interval inputs
+# The config will be printed line by line into the configuration
+telegraf_agent_output:
+  - type: influxdb
+    config:
+      - urls = ["http://url.com:8086"]
+      - database = "DS"
+      - timeout = "5s"
+      - precision = "s"
+      - '[outputs.influxdb.tagpass]'
+      - db = ["DB_1"]
+  - type: influxdb
+    config:
+      - urls = ["http://url.com:8086"]
+      - database = "DS"
+      - timeout = "5s"
+      - precision = "s"
+      - '[outputs.influxdb.tagpass]'
+      - db = ["DB_2"]
+  - type: influxdb
+    config:
+      - urls = ["http://url.com:8086"]
+      - database = "telegraf"
+      - timeout = "5s"
+      - precision = "s"
+      - namepass = ["sql_*"]

@@ -1,0 +1,2539 @@
+{
+    "dashboard": {
+        "annotations": {
+            "list": []
+        }, 
+        "editable": true, 
+        "gnetId": null, 
+        "hideControls": false, 
+        "id": null, 
+        "links": [], 
+        "title": "{{ dashboard_title }}", 
+        "refresh": false, 
+        "rows": [
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 2, 
+                        "grid": {
+                            "threshold1": null, 
+                            "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                            "threshold2": null, 
+                            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                        }, 
+                        "id": 32, 
+                        "interval": "> 60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "alignAsTable": false, 
+                            "avg": false, 
+                            "current": false, 
+                            "hideZero": false, 
+                            "max": false, 
+                            "min": false, 
+                            "rightSide": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 1, 
+                        "links": [], 
+                        "minSpan": null, 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [], 
+                        "span": 12, 
+                        "stack": true, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_wait_class", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "wait_class"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_load", 
+                                "policy": "default", 
+                                "query": "SELECT sum(\"wait_value\") FROM \"oracle_load\" WHERE \"host\" =~ /^$host$/ AND \"db\" =~ /^$db$/ AND \"wait_class\" =~ /^$wait_class$/ AND \"instance\" =~ /^$instance$/ AND $timeFilter GROUP BY \"wait_class\", \"db\"", 
+                                "rawQuery": false, 
+                                "refId": "B", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "rac_wait_value"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "mean"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "wait_class", 
+                                        "operator": "=~", 
+                                        "value": "/^$wait_class$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Oracle RAC Load Stacked - $db", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "short", 
+                                "label": "", 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }, 
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 0, 
+          "grid": {},
+                        "id": 33, 
+                        "interval": "> 60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "alignAsTable": false, 
+                            "avg": false, 
+                            "current": false, 
+                            "hideZero": false, 
+                            "max": false, 
+                            "min": false, 
+                            "rightSide": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 1, 
+                        "links": [], 
+                        "minSpan": null, 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_wait_class", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "wait_class"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_load", 
+                                "policy": "default", 
+                                "query": "SELECT sum(\"wait_value\") FROM \"oracle_load\" WHERE \"host\" =~ /^$host$/ AND \"db\" =~ /^$db$/ AND \"wait_class\" =~ /^$wait_class$/ AND \"instance\" =~ /^$instance$/ AND $timeFilter GROUP BY \"wait_class\", \"db\"", 
+                                "rawQuery": false, 
+                                "refId": "B", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "rac_wait_value"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "mean"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "wait_class", 
+                                        "operator": "=~", 
+                                        "value": "/^$wait_class$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Oracle RAC Load - $db", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "short", 
+                                "label": "", 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "db", 
+                "scopedVars": {}, 
+                "title": "Oracle Load DB - $db"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 2, 
+                        "grid": {}, 
+                        "id": 34, 
+                        "interval": "> 60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "alignAsTable": false, 
+                            "avg": false, 
+                            "current": false, 
+                            "hideZero": false, 
+                            "max": false, 
+                            "min": false, 
+                            "rightSide": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 1, 
+                        "links": [], 
+                        "minSpan": null, 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [
+                            {
+                                "alias": "Commit", 
+                                "yaxis": 1
+                            }
+                        ], 
+                        "span": 12, 
+                        "stack": true, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_wait_class", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "wait_class"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_load", 
+                                "policy": "default", 
+                                "query": "SELECT sum(\"wait_value\") FROM \"oracle_load\" WHERE \"host\" =~ /^$host$/ AND \"db\" =~ /^$db$/ AND \"wait_class\" =~ /^$wait_class$/ AND \"instance\" =~ /^$instance$/ AND $timeFilter GROUP BY \"wait_class\", \"db\"", 
+                                "rawQuery": false, 
+                                "refId": "B", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "wait_value"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "mean"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "host", 
+                                        "operator": "=~", 
+                                        "value": "/^$host$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "wait_class", 
+                                        "operator": "=~", 
+                                        "value": "/^$wait_class$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "instance", 
+                                        "operator": "=~", 
+                                        "value": "/^$instance$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Oracle Load Stacked - $instance", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "short", 
+                                "label": "", 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }, 
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 0, 
+                        "grid": {}, 
+                        "id": 35, 
+                        "interval": "> 60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "alignAsTable": false, 
+                            "avg": false, 
+                            "current": false, 
+                            "hideZero": false, 
+                            "max": false, 
+                            "min": false, 
+                            "rightSide": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 1, 
+                        "links": [], 
+                        "minSpan": null, 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [
+                            {
+                                "alias": "Commit", 
+                                "yaxis": 1
+                            }
+                        ], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_wait_class", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "wait_class"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_load", 
+                                "policy": "default", 
+                                "query": "SELECT sum(\"wait_value\") FROM \"oracle_load\" WHERE \"host\" =~ /^$host$/ AND \"db\" =~ /^$db$/ AND \"wait_class\" =~ /^$wait_class$/ AND \"instance\" =~ /^$instance$/ AND $timeFilter GROUP BY \"wait_class\", \"db\"", 
+                                "rawQuery": false, 
+                                "refId": "B", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "wait_value"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "mean"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "host", 
+                                        "operator": "=~", 
+                                        "value": "/^$host$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "wait_class", 
+                                        "operator": "=~", 
+                                        "value": "/^$wait_class$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "instance", 
+                                        "operator": "=~", 
+                                        "value": "/^$instance$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Oracle Load - $instance", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "short", 
+                                "label": "", 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "instance", 
+                "scopedVars": {}, 
+                "title": "Oracle Load - $instance"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 1, 
+                        "grid": {}, 
+                        "id": 40, 
+                        "interval": ">60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "avg": false, 
+                            "current": false, 
+                            "max": false, 
+                            "min": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 2, 
+                        "links": [], 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_metric_name", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "metric_name"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_time", 
+                                "policy": "default", 
+                                "query": "SELECT sum(\"metric_value\") FROM \"oracle_time\" WHERE \"db\" =~ /^$db$/ AND \"host\" =~ /^$host$/ AND \"metric_name\" =~ /^$time_metric$/ AND \"instance\" =~ /^$instance$/ AND $timeFilter GROUP BY \"metric_name\", \"db\"", 
+                                "rawQuery": false, 
+                                "refId": "A", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "rac_metric_value"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Oracle Time RAC - $db", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "ms", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "db", 
+                "scopedVars": {}, 
+                "title": "Oracle Time DB - $db"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 1, 
+                        "grid": {}, 
+                        "id": 17, 
+                        "interval": ">60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "avg": false, 
+                            "current": false, 
+                            "max": false, 
+                            "min": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 2, 
+                        "links": [], 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_metric_name", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "metric_name"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_time", 
+                                "policy": "default", 
+                                "query": "SELECT \"metric_value\" FROM \"oracle_io\" WHERE \"db\" =~ /^$db$/ AND \"host\" =~ /^$host$/ AND \"metric_name\" =~ /^$io_metric$/ AND $timeFilter GROUP BY time($interval), \"/^$io_metric$/\"", 
+                                "rawQuery": false, 
+                                "refId": "A", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "metric_value"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "host", 
+                                        "operator": "=~", 
+                                        "value": "/^$host$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "instance", 
+                                        "operator": "=~", 
+                                        "value": "/^$instance$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Oracle Time - $instance", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "ms", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "instance", 
+                "scopedVars": {}, 
+                "title": "Oracle Time - $instance"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 0, 
+                        "grid": {}, 
+                        "id": 2, 
+                        "interval": ">60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "avg": false, 
+                            "current": false, 
+                            "max": false, 
+                            "min": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 2, 
+                        "links": [], 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [
+                            {
+                                "alias": "$tag_wait_event count", 
+                                "yaxis": 2
+                            }
+                        ], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_wait_event", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "wait_event"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_waits", 
+                                "policy": "default", 
+                                "refId": "A", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "rac_latency"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "wait_event", 
+                                        "operator": "=~", 
+                                        "value": "/^$wait_event$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "wait_class", 
+                                        "operator": "=~", 
+                                        "value": "/^$wait_class$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Wait Events RAC - Time per Event - $db", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "ms", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "db", 
+                "scopedVars": {}, 
+                "title": "Oracle Waits DB - Time - $db"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 0, 
+                        "grid": {}, 
+                        "id": 23, 
+                        "interval": ">60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "avg": false, 
+                            "current": false, 
+                            "max": false, 
+                            "min": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 2, 
+                        "links": [], 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [
+                            {
+                                "alias": "$tag_wait_event count", 
+                                "yaxis": 2
+                            }
+                        ], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_wait_event", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "wait_event"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "wait_class"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_waits", 
+                                "policy": "default", 
+                                "refId": "A", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "latency"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "wait_event", 
+                                        "operator": "=~", 
+                                        "value": "/^$wait_event$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "wait_class", 
+                                        "operator": "=~", 
+                                        "value": "/^$wait_class$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "host", 
+                                        "operator": "=~", 
+                                        "value": "/^$host$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "instance", 
+                                        "operator": "=~", 
+                                        "value": "/^$instance$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Wait Events - $instance - Time per Event", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "ms", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "instance", 
+                "scopedVars": {}, 
+                "title": "Oracle Waits - Time - $instance"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 0, 
+                        "grid": {}, 
+                        "id": 46, 
+                        "interval": ">60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "avg": false, 
+                            "current": false, 
+                            "max": false, 
+                            "min": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 2, 
+                        "links": [], 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [
+                            {
+                                "alias": "$tag_wait_event count", 
+                                "yaxis": 2
+                            }
+                        ], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_wait_event", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "wait_event"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_waits", 
+                                "policy": "default", 
+                                "refId": "A", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "rac_count"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "wait_event", 
+                                        "operator": "=~", 
+                                        "value": "/^$wait_event$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "wait_class", 
+                                        "operator": "=~", 
+                                        "value": "/^$wait_class$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Wait Events RAC - # Events - $db", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "db", 
+                "scopedVars": {}, 
+                "title": "Oracle Waits DB - # Events - $db"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 0, 
+                        "grid": {}, 
+                        "id": 24, 
+                        "interval": ">60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "avg": false, 
+                            "current": false, 
+                            "max": false, 
+                            "min": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 2, 
+                        "links": [], 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [
+                            {
+                                "alias": "$tag_wait_event count", 
+                                "yaxis": 2
+                            }
+                        ], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_wait_event", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "wait_event"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "wait_class"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_waits", 
+                                "policy": "default", 
+                                "refId": "A", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "count"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "wait_event", 
+                                        "operator": "=~", 
+                                        "value": "/^$wait_event$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "wait_class", 
+                                        "operator": "=~", 
+                                        "value": "/^$wait_class$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "host", 
+                                        "operator": "=~", 
+                                        "value": "/^$host$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "instance", 
+                                        "operator": "=~", 
+                                        "value": "/^$instance$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Wait Events - $instance - # of Events", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "instance", 
+                "scopedVars": {}, 
+                "title": "Oracle Waits - # Events - $instance"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 0, 
+                        "grid": {}, 
+                        "id": 7, 
+                        "interval": "> 60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "avg": false, 
+                            "current": false, 
+                            "max": false, 
+                            "min": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 2, 
+                        "links": [], 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_metric_name", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "metric_name"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_sessions", 
+                                "policy": "default", 
+                                "query": "SELECT \"metric_value\" FROM \"oracle_sessions\" WHERE \"db\" =~ /^$db$/ AND \"host\" =~ /^$host$/ AND \"metric_name\" =~ /^$session_metric$/ AND $timeFilter GROUP BY \"metric_name\"", 
+                                "rawQuery": false, 
+                                "refId": "A", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "rac_metric_value"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }
+                                ]
+                            }, 
+                            {
+                                "alias": "cpu_count", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                    "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_sessions", 
+                                "policy": "default", 
+                                "query": "SELECT SUM(\"cpu_count\") FROM \"oracle_sessions\" WHERE \"db\" =~ /^$db$/ AND $timeFilter GROUP BY \"db\"", 
+                                "rawQuery": false, 
+                                "refId": "B", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "rac_cpu_count"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Oracle Sessions RAC - $db", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "db", 
+                "scopedVars": {}, 
+                "title": "Oracle Sessions DB - $db"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 0, 
+                        "grid": {}, 
+                        "id": 18, 
+                        "interval": ">60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "avg": false, 
+                            "current": false, 
+                            "max": false, 
+                            "min": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 2, 
+                        "links": [], 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_metric_name", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "metric_name"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_sessions", 
+                                "policy": "default", 
+                                "query": "SELECT \"metric_value\" FROM \"oracle_sessions\" WHERE \"db\" =~ /^$db$/ AND \"host\" =~ /^$host$/ AND \"metric_name\" =~ /^$session_metric$/ AND $timeFilter GROUP BY \"metric_name\"", 
+                                "rawQuery": false, 
+                                "refId": "A", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "metric_value"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "instance", 
+                                        "operator": "=~", 
+                                        "value": "/^$instance$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "host", 
+                                        "operator": "=~", 
+                                        "value": "/^$host$/"
+                                    }
+                                ]
+                            }, 
+                            {
+                                "alias": "cpu_count", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                         "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_sessions", 
+                                "policy": "default", 
+                                "query": "SELECT \"cpu_count\" FROM \"oracle_sessions\" WHERE \"db\" =~ /^$db$/ AND \"instance\" =~ /^$instance$/ AND \"host\" =~ /^$host$/ AND $timeFilter GROUP BY \"db\", \"host\", \"instance\"", 
+                                "rawQuery": false, 
+                                "refId": "B", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "cpu_count"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "instance", 
+                                        "operator": "=~", 
+                                        "value": "/^$instance$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "host", 
+                                        "operator": "=~", 
+                                        "value": "/^$host$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Oracle Sessions - $instance", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "instance", 
+                "scopedVars": {}, 
+                "title": "Oracle Sessions - $instance"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 0, 
+                        "grid": {}, 
+                        "id": 28, 
+                        "interval": ">60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "avg": false, 
+                            "current": false, 
+                            "max": false, 
+                            "min": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 2, 
+                        "links": [], 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_metric_name", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "metric_name"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_io", 
+                                "policy": "default", 
+                                "query": "SELECT \"metric_value\" FROM \"oracle_io\" WHERE \"db\" =~ /^$db$/ AND \"host\" =~ /^$host$/ AND \"metric_name\" =~ /^$io_metric$/ AND $timeFilter GROUP BY \"metric_name\"", 
+                                "rawQuery": false, 
+                                "refId": "A", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "rac_metric_value"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "metric_name", 
+                                        "operator": "=~", 
+                                        "value": "/^$io_metric$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Oracle IO RAC - $db", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "mbytes", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "db", 
+                "scopedVars": {}, 
+                "title": "Oracle IO DB - $db"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 0, 
+                        "grid": {}, 
+                        "id": 29, 
+                        "interval": ">60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "avg": false, 
+                            "current": false, 
+                            "max": false, 
+                            "min": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 2, 
+                        "links": [], 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_metric_name", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "metric_name"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_io", 
+                                "policy": "default", 
+                                "query": "SELECT \"metric_value\" FROM \"oracle_io\" WHERE \"db\" =~ /^$db$/ AND \"host\" =~ /^$host$/ AND \"metric_name\" =~ /^$io_metric$/ AND $timeFilter GROUP BY \"metric_name\"", 
+                                "rawQuery": false, 
+                                "refId": "A", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "metric_value"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "host", 
+                                        "operator": "=~", 
+                                        "value": "/^$host$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "metric_name", 
+                                        "operator": "=~", 
+                                        "value": "/^$io_metric$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "instance", 
+                                        "operator": "=~", 
+                                        "value": "/^$instance$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Oracle IO - $instance", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "mbytes", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "instance", 
+                "scopedVars": {}, 
+                "title": "Oracle IO - $instance"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 0, 
+                        "grid": {}, 
+                        "id": 25, 
+                        "interval": ">60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "avg": false, 
+                            "current": false, 
+                            "max": false, 
+                            "min": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 2, 
+                        "links": [], 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_metric_name", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "metric_name"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_calls", 
+                                "policy": "default", 
+                                "query": "SELECT \"metric_value\" FROM \"oracle_io\" WHERE \"db\" =~ /^$db$/ AND \"host\" =~ /^$host$/ AND \"metric_name\" =~ /^$io_metric$/ AND $timeFilter GROUP BY time($interval), \"/^$io_metric$/\"", 
+                                "rawQuery": false, 
+                                "refId": "A", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "rac_metric_value"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "metric_name", 
+                                        "operator": "=~", 
+                                        "value": "/^$call_metric$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Oracle Calls RAC - $db", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "db", 
+                "scopedVars": {}, 
+                "title": "Oracle Calls DB - $db"
+            }, 
+            {
+                "collapse": true, 
+                "editable": true, 
+                "height": "250px", 
+                "panels": [
+                    {
+                        "aliasColors": {}, 
+                        "bars": false, 
+                        "datasource": "{{ dashboard_datasource }}", 
+                        "editable": true, 
+                        "error": false, 
+                        "fill": 0, 
+                        "grid": {}, 
+                        "id": 26, 
+                        "interval": ">60s", 
+                        "isNew": true, 
+                        "legend": {
+                            "avg": false, 
+                            "current": false, 
+                            "max": false, 
+                            "min": false, 
+                            "show": true, 
+                            "total": false, 
+                            "values": false
+                        }, 
+                        "lines": true, 
+                        "linewidth": 2, 
+                        "links": [], 
+                        "nullPointMode": "connected", 
+                        "percentage": false, 
+                        "pointradius": 5, 
+                        "points": false, 
+                        "renderer": "flot", 
+                        "repeatIteration": 1499693984336, 
+                        "scopedVars": {}, 
+                        "seriesOverrides": [], 
+                        "span": 12, 
+                        "stack": false, 
+                        "steppedLine": false, 
+                        "targets": [
+                            {
+                                "alias": "$tag_metric_name", 
+                                "dsType": "influxdb", 
+                                "groupBy": [
+                                    {
+                                        "params": [
+                                            "$interval"
+                                        ], 
+                                        "type": "time"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "metric_name"
+                                        ], 
+                                        "type": "tag"
+                                    }, 
+                                    {
+                                        "params": [
+                                            "db"
+                                        ], 
+                                        "type": "tag"
+                                    }
+                                ], 
+                                "measurement": "oracle_calls", 
+                                "policy": "default", 
+                                "query": "SELECT \"metric_value\" FROM \"oracle_io\" WHERE \"db\" =~ /^$db$/ AND \"host\" =~ /^$host$/ AND \"metric_name\" =~ /^$io_metric$/ AND $timeFilter GROUP BY time($interval), \"/^$io_metric$/\"", 
+                                "rawQuery": false, 
+                                "refId": "A", 
+                                "resultFormat": "time_series", 
+                                "select": [
+                                    [
+                                        {
+                                            "params": [
+                                                "metric_value"
+                                            ], 
+                                            "type": "field"
+                                        }, 
+                                        {
+                                            "params": [], 
+                                            "type": "max"
+                                        }
+                                    ]
+                                ], 
+                                "tags": [
+                                    {
+                                        "key": "db", 
+                                        "operator": "=~", 
+                                        "value": "/^$db$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "host", 
+                                        "operator": "=~", 
+                                        "value": "/^$host$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "metric_name", 
+                                        "operator": "=~", 
+                                        "value": "/^$call_metric$/"
+                                    }, 
+                                    {
+                                        "condition": "AND", 
+                                        "key": "instance", 
+                                        "operator": "=~", 
+                                        "value": "/^$instance$/"
+                                    }
+                                ]
+                            }
+                        ], 
+                        "timeFrom": null, 
+                        "timeShift": null, 
+                        "title": "Oracle Calls - $instance", 
+                        "tooltip": {
+                            "msResolution": true, 
+                            "shared": true, 
+                            "sort": 0, 
+                            "value_type": "cumulative"
+                        }, 
+                        "type": "graph", 
+                        "xaxis": {
+                            "show": true
+                        }, 
+                        "yaxes": [
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }, 
+                            {
+                                "format": "short", 
+                                "label": null, 
+                                "logBase": 1, 
+                                "max": null, 
+                                "min": null, 
+                                "show": true
+                            }
+                        ]
+                    }
+                ], 
+                "repeat": "instance", 
+                "scopedVars": {}, 
+                "title": "Oracle Calls - $instance"
+            }
+        ], 
+        "schemaVersion": 12, 
+        "sharedCrosshair": false, 
+        "style": "dark", 
+        "tags": [], 
+        "templating": {
+            "list": [
+                {
+                    "current": {}, 
+                    "datasource": "{{ dashboard_datasource }}", 
+                    "hide": 0, 
+                    "includeAll": true, 
+                    "multi": true, 
+                    "name": "db", 
+                    "options": [], 
+                    "query": "show tag values  from \"oracle_load\" with key=\"db\"", 
+                    "refresh": 1, 
+                    "regex": "", 
+                    "type": "query"
+                }, 
+                {
+                    "current": {}, 
+                    "datasource": "{{ dashboard_datasource }}", 
+                    "hide": 0, 
+                    "includeAll": true, 
+                    "multi": true, 
+                    "name": "host", 
+                    "options": [], 
+                    "query": "show tag values from \"oracle_load\" with key=\"host\"", 
+                    "refresh": 1, 
+                    "regex": "", 
+                    "type": "query"
+                }, 
+                {
+                    "current": {}, 
+                    "datasource": "{{ dashboard_datasource }}", 
+                    "hide": 0, 
+                    "includeAll": true, 
+                    "multi": true, 
+                    "name": "instance", 
+                    "options": [], 
+                    "query": "show tag values  from \"oracle_load\" with key=\"instance\"", 
+                    "refresh": 1, 
+                    "type": "query"
+                }, 
+                {
+                    "current": {}, 
+                    "datasource": "{{ dashboard_datasource }}", 
+                    "hide": 0, 
+                    "includeAll": true, 
+                    "multi": true, 
+                    "name": "wait_class", 
+                    "options": [], 
+                    "query": "show tag values from \"oracle_load\" with key=\"wait_class\"", 
+                    "refresh": 1, 
+                    "regex": "", 
+                    "type": "query"
+                }, 
+                {
+                    "current": {}, 
+                    "datasource": "{{ dashboard_datasource }}", 
+                    "hide": 0, 
+                    "includeAll": true, 
+                    "multi": true, 
+                    "name": "wait_event", 
+                    "options": [], 
+                    "query": "show tag values from \"oracle_waits\" with key=\"wait_event\"", 
+                    "refresh": 1, 
+                    "regex": "", 
+                    "type": "query"
+                }, 
+                {
+                    "current": {}, 
+                    "datasource": "{{ dashboard_datasource }}", 
+                    "hide": 0, 
+                    "includeAll": true, 
+                    "multi": true, 
+                    "name": "io_metric", 
+                    "options": [], 
+                    "query": "show tag values from \"oracle_io\" with key=\"metric_name\"", 
+                    "refresh": 1, 
+                    "regex": "", 
+                    "type": "query"
+                }, 
+                {
+                    "current": {}, 
+                    "datasource": "{{ dashboard_datasource }}", 
+                    "hide": 0, 
+                    "includeAll": true, 
+                    "multi": true, 
+                    "name": "call_metric", 
+                    "options": [], 
+                    "query": "show tag values from \"oracle_calls\" with key=\"metric_name\"", 
+                    "refresh": 1, 
+                    "regex": "", 
+                    "type": "query"
+                }
+            ]
+        }, 
+        "time": {
+            "from": "now-24h", 
+            "to": "now"
+        }, 
+        "timepicker": {
+            "refresh_intervals": [
+                "5s", 
+                "10s", 
+                "30s", 
+                "1m", 
+                "5m", 
+                "15m", 
+                "30m", 
+                "1h", 
+                "2h", 
+                "1d"
+            ], 
+            "time_options": [
+                "5m", 
+                "15m", 
+                "1h", 
+                "6h", 
+                "12h", 
+                "24h", 
+                "2d", 
+                "7d", 
+                "30d"
+            ]
+        }, 
+        "timezone": "browser", 
+        "version": 0
+    }, 
+ "overwrite": true
+}

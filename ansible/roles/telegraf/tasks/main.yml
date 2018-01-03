@@ -1,0 +1,33 @@
+
+  - name: fetch the telegraf agent package from Software Depot
+    local_action:
+      module: maven_artifact
+      group_id: com.org.app
+      artifact_id: telegraf-oracle 
+      repository_url: "http://url.com:8081"
+      username: admin
+      password: admin 
+      dest: "{{ telegraf_package_dest }}"
+      extension: tar.gz
+      version: "{{ telegraf_version }}"
+    run_once: true
+
+  - name: local unarchive of package
+    local_action:
+      module: unarchive
+      src: "{{ telegraf_package_dest }}/{{ telegraf_package_file }}"
+      dest: "{{ telegraf_package_dest }}"
+    run_once: true
+
+  - include: deploy.yml
+    when: use_telegraf is defined and use_telegraf
+
+  - name: cleanup local package artifacts
+    local_action:
+      module: file
+      path: "{{ item }}"
+      state: absent
+    with_items:
+        - "{{ telegraf_package_dest }}/{{ telegraf_version }}"
+        - "{{ telegraf_package_dest }}/{{ telegraf_package_file }}"
+    run_once: true

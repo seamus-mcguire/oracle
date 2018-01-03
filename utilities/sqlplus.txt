@@ -1,0 +1,48 @@
+
+# Spool to a file with no headings etc.
+set verify off
+set pagesize 0
+set linesize 200
+set heading off
+set feedback off
+
+exec stuff();
+
+set verify on
+set pagesize 14
+set linesize 80
+set heading on
+set feedback on
+
+
+### variables
+# Prompt
+define promptvar
+select '&promptvar' from dual;
+Enter value for promptvar: astring
+	
+# Substitution
+define myvar = 'MyVar Value'
+define myvar
+select '&myvar' from dual;
+
+# Substitution column assignment
+column mycol new_value colval
+select 'Column Val' as mycol from dual;
+define colval
+select '&colval' from dual;
+
+# Bind Variable
+variable bindvar number
+exec :bindvar := 8;
+print :bindvar
+
+# Binds and Substitutions
+define subvar = 'MyVar Value'
+variable bindvar varchar2(255)
+exec :bindvar := '&subvar';
+print :bindvar
+
+column subcol new_value subcolvar noprint
+select :bindvar subcol from dual;
+defin subcolvar

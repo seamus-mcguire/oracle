@@ -1,0 +1,17 @@
+
+- hosts: all
+  
+  vars:
+    action: start
+
+  tasks:
+
+  - name: "telegraf - {{ action }}"
+    shell:  "{{ telegraf_init_script }} {{ action }}"
+    register: result
+    when: use_telegraf
+    changed_when: "result.rc != 0"
+
+  - debug: msg="{{ result.stdout_lines | default([]) }}"
+    when: result is defined and use_telegraf
+

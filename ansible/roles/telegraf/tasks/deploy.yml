@@ -1,0 +1,45 @@
+
+  - name: stop telegraf
+    shell:  "{{ telegraf_init_script }} stop"
+    ignore_errors: yes
+
+  - name: create base install dir if needed
+    file:
+      path: "{{ telegraf_base }}"
+      state: directory
+      mode: 0750
+
+  - name: clean version install dir
+    file:
+      path: "{{ telegraf_version_dir }}"
+      state: absent
+
+  - name: deploy telegraf package to servers
+    unarchive:
+      src: "{{ telegraf_package_dest }}/{{ telegraf_package_file }}"
+      dest: "{{ telegraf_base }}"
+
+  - name: link package to current version
+    file:
+      src: "{{ telegraf_version_dir }}"
+      dest: "{{ telegraf_install_dir }}"
+      state: link
+
+  - name: copy shell scripts templates
+    template:   
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      mode: 0744
+    with_items:
+      - { src: oracle_metrics.sh, dest: "{{ telegraph_oracle_metrics_dir }}" }
+      - { src: "{{ telegraf_package_dest }}/{{ telegraf_version }}/telegraf.sh",   dest: "{{ telegraf_install_dir }}" }
+
+  - name: copy telegraf.conf file
+    template:
+      src: telegraf.conf
+      dest: "{{ telegraf_conf_file }}"
+      mode: 0644
+
+  - name: start telegraf
+    shell:  "{{ telegraf_init_script }} start"
+
