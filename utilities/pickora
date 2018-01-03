@@ -1,0 +1,298 @@
+#*******************************************************************************
+#
+#  Filename:    pickora
+#  ---------
+#
+#  Description: This script is used setup a user's environment for access to
+#  ------------ an ORACLE database. It is loosely based on oraenv.
+#
+#  Usage: . pickora [ORACLE_SID]
+#  ------
+#
+#  Notes: This script should be sourced, as such it does not exit when errors are
+#  ------ encounted, we don't want to leave the shell.  It will prompt for the
+#         value of the new ORACLE_SID if the SID is not supplied as a parameter.
+#
+#*******************************************************************************
+
+##
+### Variables
+##
+# Set this in accordance with the platform
+if [ ! $ORATAB ] ; then
+  OS=`uname`
+  if [ "$OS" = SunOS ] ; then
+  	ORATAB=/var/opt/oracle/oratab
+  else
+  	ORATAB=/etc/oratab
+  fi
+fi
+
+RET_VAL=0
+
+##
+### Functions
+##
+
+##
+### Begin
+##
+
+if [ -f $ORATAB ]; then
+
+  # Get the Current Values for ORACLE HOME/SID, to be used when
+  # resetting PATH/LD_LIBRARY_PATH
+  if [ ${ORACLE_HOME:-0} = 0 ]; then
+      OLDHOME=$PATH
+  else
+      OLDHOME=$ORACLE_HOME
+  fi
+  
+  case "$ORACLE_SID" in
+      "")	ORASID=$LOGNAME ;;
+      *)	ORASID=$ORACLE_SID ;;
+  esac
+
+  # Determine how to suppress newline with echo command.
+  N=
+  C=
+  if echo "\c" | grep c >/dev/null 2>&1; then
+      N='-n'
+  else
+      C='\c'
+  fi
+
+  # Get the command line parameter or prompt
+  if [ "$1" = "" ]; then
+    # No parameter supplied so read prompt for input
+    echo
+    echo "Instances listed in the ORATAB"
+    echo
+    # Show the SIDS from ORATAB with a number for each to choose, format:
+    # [1]     MYDBDA        /u01/oracle/product/MYDB/10.2.0/
+    egrep '^[^#]+:' $ORATAB | awk -F: '{print "["NR"]" "\t" $1 "  \t" $2}' | column -t
+    echo
+
+    # Get the user input
+    echo $N "ORACLE_SID = [$ORASID] ? $C"
+    read NEWSID
+    # Read the ORATAB and to get the SID based on the number supplied (NR == $NEWSID)
+    ORASID=`egrep -n '^[^#]+:' $ORATAB |awk -F: "NR == \"$NEWSID\" {print \\$2}"`
+
+    if [ "$ORASID" = "" ]; then
+      echo "Invalid Input '${NEWSID}'. Specify a number in the list."
+      RET_VAL=1
+    fi
+
+  else
+    # We've been passed the SID so just process without prompting and reset it
+    ORASID="$1"
+    shift "$#"
+  fi
+
+
+  # Parse the ORATAB and set the main variables
+     # "*" is a special case - it means no SID to be defined.
+     # Escape "*" in order match on it in the ORATAB using awk
+     if [ "${ORASID}" = "*" ]; then
+       ORASID='\*'
+     fi
+
+    # Get the Home defined in the ORATAB for the SID
+    ORAHOME=`awk -F: "/^${ORASID}:/ {print \\$2; exit}" $ORATAB`
+
+    # If it is RAC, we may have been passed a DB_NAME instead of a SID
+    # See if we have a SID - DB_NAME=MYDB01 => SID=MYDB011
+    if  [ -z "$ORAHOME" ]; then
+      ORAHOME=`awk -F: "/^${ORASID}[0-9]:/ {print \\$2; exit}" $ORATAB`
+      if [ -n "$ORAHOME" ]; then
+        ORASID=`awk -F: "/^${ORASID}[0-9]:/ {print \\$1; exit}" $ORATAB`
+      fi
+    fi
+
+    case "$ORAHOME" in
+         "") echo "Cannot locate ORACLE_HOME for SID '${ORASID}'"
+             RET_VAL=1 ;;
+          *)
+             # Null the SID for "*"
+             if [ "${ORASID}" = '\*' ]; then
+               ORACLE_SID=; export ORACLE_SID
+             else
+               ORACLE_SID=$ORASID; export ORACLE_SID
+             fi
+             ORACLE_HOME=$ORAHOME; export ORACLE_HOME
+             echo "pickora - Setting Environment to ${ORACLE_SID}:${ORACLE_HOME}"
+             # If this is a RAC DB it will have a number at the end
+             # Strip it off to get the DB_NAME
+             DB_NAME=`echo $ORACLE_SID | sed 's/[0-9]$//'`; export DB_NAME
+    esac
+
+  
+  #
+  # Put new ORACLE_HOME in path and remove old one
+  #
+  case "$PATH" in
+      *$OLDHOME/bin*)	PATH=`echo $PATH | sed "s;$OLDHOME/bin;$ORACLE_HOME/bin;g"` ;;
+      *$ORACLE_HOME/bin*)	;;
+      *:)			PATH=${PATH}$ORACLE_HOME/bin: ;;
+      "")			PATH=$ORACLE_HOME/bin ;;
+      *)			PATH=$PATH:$ORACLE_HOME/bin ;;
+  esac
+  
+  export PATH 
+  
+  #
+  # Put new ORACLE_HOME in LD_LIBRARY_PATH and remove old one
+  #
+  case "$LD_LIBRARY_PATH" in
+      *$OLDHOME/lib*)     LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH | \
+                              sed "s;$OLDHOME/lib;$ORACLE_HOME/lib;g"` ;;
+      *$ORACLE_HOME/lib*) ;;
+      *:)                 LD_LIBRARY_PATH=${LD_LIBRARY_PATH}$ORACLE_HOME/lib: ;;
+      "")                 LD_LIBRARY_PATH=$ORACLE_HOME/lib ;;
+      *)                  LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME/lib ;;
+  esac
+  
+  export LD_LIBRARY_PATH
+  
+##
+### Aliases
+##
+
+### Functions
+quiet_sql=$(cat << EOM
+        set echo off
+        set pause off
+        set feedback off
+        set pagesize 0
+        set heading off
+EOM
+)
+
+# Audit File location
+auditdest () {
+sqlplus -S /nolog <<EOF
+        $quiet_sql
+        connect / as sysdba
+        select value
+        from v\$parameter
+        where name = 'audit_file_dest';
+        exit
+EOF
+}
+
+# ASM Disk Group Usage function to be used by alias
+dgusage () {
+sqlplus -S /nolog <<"EOF"
+     connect / as sysdba
+	 SET LINE 250
+   SET PAGES 1000
+	 SELECT
+       name disk_group,
+       state,
+       round(total_mb/1024,2) total_gb,
+       round(free_mb/1024,2) free_gb,
+       round((free_mb/total_mb),2)*100 pct_free,
+	   round(((total_mb-free_mb)/total_mb),2)*100 pct_used
+     FROM v$asm_diskgroup
+	 ORDER BY name;
+   exit
+EOF
+}
+
+# ADR location
+diagdest () {
+sqlplus -S /nolog <<EOF
+        $quiet_sql
+        connect / as sysdba
+        select value
+        from v\$parameter
+        where name = 'diagnostic_dest';
+        exit
+EOF
+}
+
+  # Show database parameters from the command line
+  sqlparameter () {
+
+sqlplus -S /nolog <<EOF
+   connect / as sysdba
+   SET PAGES 1000
+	 SET LINE 250
+	 SHOW PARAMETER $1
+   exit
+EOF
+}
+
+  # Overwrite otk oraenv's setting of this
+  PS1="[${LOGNAME}@`uname -n`:${ORACLE_SID}] $ "''; export PS1
+
+  # Variables used by aliases
+  ORA_ADMIN=${ORACLE_BASE}/admin/${DB_NAME}; export ORA_ADMIN
+  ORA_DIAG=$(diagdest)
+  Get_Config_Param EXPORT_DUMP_DIR
+
+  # Aliases
+  alias admin='cd ${ORA_ADMIN}'
+  alias adump='cd $(auditdest)'
+  alias bkup='cd {{ fxora_export_dump_dir }}'
+  alias crs='crsctl stat res -t| more'
+  alias dbs='cd ${ORACLE_HOME}/dbs'
+  alias dfs='df -h | grep ${DB_NAME} | sort -k 6'
+  alias dg='dgusage'
+  alias dgstat='dgmgrl -silent / "show configuration"'
+  alias dgdb='dgmgrl -silent / "show database verbose '"'"'${DB_NAME}'"'"'"'
+  alias dumps='cd {{ fxora_export_dump_dir }}/${DB_NAME}'
+  alias hist='history | grep'
+  alias l='ls -ltrh'
+  alias logs='cd {{ fxora_script_log }}'
+  alias lsnr='ps -ef | grep [l]snr'
+  alias ob='cd ${ORACLE_BASE}'
+  alias oh='cd ${ORACLE_HOME}'
+  alias orabin='cd {{ fxora_bin }}'
+  alias oragrid='ssh oragrid@`hostname`'
+  alias otk='cd ${OTK_BASE}'
+  alias pfile='cd ${ORA_ADMIN}/pfile'
+  alias pmon='ps -ef | grep [p]mon'
+  alias scripts='cd {{ fxora_script_base }}'
+  alias sql='sqlplus -L "/ as sysdba"'
+  alias sqlparm='sqlparameter $1'
+  alias sysasm='sqlplus -L "/ as sysasm"'
+  alias tns='cd ${ORACLE_HOME}/network/admin'
+  alias tele='cd {{ telegraf_install_dir }}'
+  alias var='env|grep ORA|sort'
+
+  # ADR related aliases
+  ora_version=`(sqlplus -v | egrep -o [0-9]+ | head -1) 2>/dev/null`
+  # Oracle Home path alternative `echo $ORACLE_HOME | awk 'BEGIN {FS="/"} ; {print $6}' | awk 'BEGIN {FS="."} ; {print $1}'`
+  # Opatch slow alternative '$ORACLE_HOME/OPatch/opatch lsinventory | awk '/^Oracle Database/ {print $N' | awk -F "." '/1/ {print $1}'
+
+  if [ $ora_version -lt 11 ]; then
+
+	alias bdump='cd ${ORA_ADMIN}/bdump'
+	alias cdump='cd ${ORA_ADMIN}/cdump'
+	alias talert="tail -f ${ORA_ADMIN}/bdump/alert_${ORACLE_SID}.log"
+	alias udump='cd ${ORA_ADMIN}/udump'
+	alias valert="view ${ORA_ADMIN}/bdump/alert_${ORACLE_SID}.log"
+
+  elif [ $ora_version -ge  11 ]; then
+
+	alias sadrci='adrci exec="set base ${ORA_DIAG};show homes"'
+	alias asmbdump='cd ${ORA_DIAG}/`adrci exec="set base ${ORA_DIAG};show homes" | grep ASM`/trace'
+	alias bdump='cd ${ORA_DIAG}/`adrci exec="set base ${ORA_DIAG};show homes"  | grep $ORACLE_SID`/trace'
+	alias cdump='cd ${ORA_DIAG}/`adrci exec="set base ${ORA_DIAG};show homes" | grep $ORACLE_SID`/cdump'
+	alias dbdiag='cd $ORA_DIAG/`adrci exec="set base ${ORA_DIAG};show homes" | grep $ORACLE_SID`'
+	alias diag='cd ${ORA_DIAG}/diag'
+	alias talert='tail -f $ORA_DIAG/`adrci exec="set base ${ORA_DIAG};show homes" | grep $ORACLE_SID`/trace/alert_${ORACLE_SID}.log'
+	alias tlsnr='tail -f $ORA_DIAG/`adrci exec="set base ${ORA_DIAG};show homes" | egrep tnslsnr/${HOSTNAME}/listener\$`/trace/listener.log'
+	alias tnsdiag='cd $ORA_DIAG/`adrci exec="set base ${ORA_DIAG};show homes" | egrep tnslsnr/${HOSTNAME}/listener\$`/trace'
+	alias valert='view $ORA_DIAG/`adrci exec="set base ${ORA_DIAG};show homes" | grep $ORACLE_SID`/trace/alert_${ORACLE_SID}.log'
+	alias vlsnr='view $ORA_DIAG/`adrci exec="set base ${ORA_DIAG};show homes" | egrep tnslsnr/${HOSTNAME}/listener\$`/trace/listener.log'
+  fi
+
+else
+  echo "Cannot read ORATAB - $ORATAB"
+  RET_VAL=1
+fi
+
+return $RET_VAL
